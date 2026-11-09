@@ -1,0 +1,11 @@
+[Unit]
+Description=Build, test and deploy Conflictogen bot from main
+Wants=network-online.target
+After=network-online.target docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/conflictogen-bot-update
+TimeoutStartSec=20min
+UMask=0077

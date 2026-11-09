@@ -1,0 +1,29 @@
+services:
+  conflict-bot:
+    image: ${BOT_IMAGE:-conflictogen-bot:local}
+    build: .
+    restart: unless-stopped
+    init: true
+    env_file: ${BOT_ENV_FILE:-.env}
+    volumes:
+      - conflict-data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 256m
+    cpus: 0.5
+    healthcheck:
+      test: [CMD, python, -c, "import time; from pathlib import Path; p=Path('/tmp/bot.ready'); assert p.exists() and time.time()-p.stat().st_mtime < 180"]
+      interval: 15s
+      timeout: 5s
+      start_period: 45s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: 5m
+        max-file: "2"
+volumes:
+  conflict-data:
