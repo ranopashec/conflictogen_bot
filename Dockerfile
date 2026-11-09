@@ -7,6 +7,7 @@ COPY conflict_bot ./conflict_bot
 COPY examples.json ./
 
 FROM dependencies AS test
+RUN apt-get update && apt-get install -y --no-install-recommends git util-linux && rm -rf /var/lib/apt/lists/*
 COPY requirements-dev.txt ./
 RUN pip install --no-cache-dir -r requirements-dev.txt
 COPY tests ./tests
