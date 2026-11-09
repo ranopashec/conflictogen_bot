@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends git util-linux 
 COPY requirements-dev.txt ./
 RUN pip install --no-cache-dir -r requirements-dev.txt
 COPY tests ./tests
+COPY deploy ./deploy
 COPY pyproject.toml ./
 RUN python -m pytest -q && touch /tmp/tests-passed
 
